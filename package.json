@@ -1,0 +1,26 @@
+{
+  "name": "@hafizuddin/rspack-plugins",
+  "version": "0.1.0",
+  "description": "A collection of Rspack plugins",
+  "author": "Mohd Hafizuddin M Marzuki <hafizuddin_83@yahoo.com>",
+  "license": "MIT",
+  "main": "./src/index.js",
+  "keywords": [
+    "rspack",
+    "plugin",
+    "combine files",
+    "css only"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/apih/rspack-plugins"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5"
+  },
+  "peerDependencies": {
+    "@swc/core": "^1.4.8",
+    "webpack-sources": "^3.2.3"
+  },
+  "scripts": {}
+}
