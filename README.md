@@ -1,5 +1,9 @@
 # Rspack Plugins
 
+[![npm](https://img.shields.io/npm/v/@hafizuddin/rspack-plugins?style=flat-square)](https://www.npmjs.com/package/@hafizuddin/rspack-plugins)
+[![npm downloads](https://img.shields.io/npm/dm/@hafizuddin/rspack-plugins?style=flat-square)](https://www.npmjs.com/package/@hafizuddin/rspack-plugins)
+[![License](https://img.shields.io/npm/l/@hafizuddin/rspack-plugins?style=flat-square)](LICENSE.md)
+
 A collection of Rspack plugins that can be helpful for web development.
 
 ## Installation
@@ -13,12 +17,11 @@ npm install @hafizuddin/rspack-plugins
 ## Plugins
 ### CombineFilesPlugin
 
-This plugin is for combining multiple files into a single file. Useful for handling legacy code.
+This plugin is used to combine multiple files into a single file. Useful for handling legacy code.
 
 ```js
 const rspack = require('@rspack/core');
 const { defineConfig } = require('@rspack/cli');
-const path = require('path');
 const { CombineFilesPlugin } = require('@hafizuddin/rspack-plugins');
 
 module.exports = defineConfig({
@@ -38,7 +41,7 @@ module.exports = defineConfig({
 
 ### CssOnlyPlugin
 
-This plugin is for removing generated JS files for CSS-only entries.
+This plugin is used to removed generated JS files for CSS-only entries.
 
 ```js
 const rspack = require('@rspack/core');
@@ -60,11 +63,78 @@ module.exports = defineConfig({
         new CssOnlyPlugin(['aux']),
     ],
 });
+
+```
+
+### LightningcssMinifyPlugin
+
+This plugin is used to enable CSS minification using [Lightning CSS](https://lightningcss.dev/).
+
+```js
+const rspack = require('@rspack/core');
+const { defineConfig } = require('@rspack/cli');
+const { LightningcssMinifyPlugin } = require('@hafizuddin/rspack-plugins');
+
+module.exports = defineConfig({
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new rspack.SwcJsMinimizerRspackPlugin({
+                format: {
+                    comments: false,
+                },
+            }),
+            new LightningcssMinifyPlugin(),
+        ],
+    },
+});
+```
+
+## Loaders
+### noop loader
+This loader does nothing.
+
+### lightningcss loader
+This loader uses [Lightning CSS](https://lightningcss.dev/) to process the CSS. Can be used to replace `postcss-loader` with `autoprefixer` plugin.
+
+### Loader Example
+```js
+const rspack = require('@rspack/core');
+const { defineConfig } = require('@rspack/cli');
+const { resolveLoader } = require('@hafizuddin/rspack-plugins');
+
+module.exports = defineConfig({
+    module: {
+        rules: [
+            {
+                test: /\.scss$/,
+                type: 'css',
+                use: [
+                    {
+                        loader: resolveLoader('noop'),
+                    },
+                    {
+                        loader: resolveLoader('lightningcss'),
+                    },
+                    {
+                        loader: 'sass-loader',
+                        options: {
+                            sassOptions: {
+                                outputStyle: 'expanded',
+                            },
+                        },
+                    },
+                ],
+            },
+        ],
+    },
+});
+
 ```
 
 ## Security Vulnerabilities
 
-If you discover any security related issues, please email <hafizuddin_83@yahoo.com> instead of using the issue tracker. Please prefix the subject with `Quival:`.
+If you discover any security related issues, please email <hafizuddin_83@yahoo.com> instead of using the issue tracker. Please prefix the subject with `Rspack Plugins:`.
 
 ## Credits
 
