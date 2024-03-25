@@ -1,4 +1,5 @@
 const { readFileSync } = require('fs');
+const { transform } = require('lightningcss');
 const { minifySync } = require('@swc/core');
 const { RawSource } = require('webpack-sources');
 
@@ -16,10 +17,17 @@ class CombineFilesPlugin {
           contents += readFileSync(file, 'utf8') + '\n';
         });
 
-        if (item.minify && item.output.endsWith('.js')) {
-          contents = minifySync(contents, {
-            compress: true,
-          }).code;
+        if (item.minify) {
+          if (item.output.endsWith('.css')) {
+            contents = transform({
+              code: Buffer.from(contents),
+              minify: true,
+            }).code;
+          } else if (item.output.endsWith('.js')) {
+            contents = minifySync(contents, {
+              compress: true,
+            }).code;
+          }
         }
 
         compilation.emitAsset(item.output, new RawSource(contents), {
