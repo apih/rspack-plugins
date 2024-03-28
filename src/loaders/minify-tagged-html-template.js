@@ -71,8 +71,6 @@ module.exports = function (content, map, meta) {
         minified = minified.substring(tagFunctionName.length);
       }
 
-      console.log(template, '\n\n', minified, '\n\n---');
-
       content = content.replace(template, minified);
     }
   }
