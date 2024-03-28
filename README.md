@@ -97,6 +97,9 @@ This loader does nothing.
 ### lightningcss loader
 This loader uses [Lightning CSS](https://lightningcss.dev/) to process the CSS. Can be used to replace `postcss-loader` with `autoprefixer` plugin.
 
+### minify-tagged-html-template loader
+This loader minifies tagged HTML templates within JS code. Suitable for removing unnecessary whitespaces from the code.
+
 ### Loader Example
 ```js
 const rspack = require('@rspack/core');
@@ -106,6 +109,22 @@ const { resolveLoader } = require('@hafizuddin/rspack-plugins');
 module.exports = defineConfig({
     module: {
         rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: [
+                    {
+                        loader: 'builtin:swc-loader',
+                    },
+                    {
+                        loader: resolveLoader('minify-tagged-html-template'),
+                        options: {
+                            tagFunctionNames: ['minifyHtml'],
+                            removeTagFunction: true, // minifyHtml will be removed
+                        },
+                    },
+                ],
+            },
             {
                 test: /\.scss$/,
                 type: 'css',
